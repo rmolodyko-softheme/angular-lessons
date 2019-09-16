@@ -6,12 +6,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   name = 'templates-and-directives';
-
-  type: string;
-
-  constructor() {
-    setTimeout(() => {
-      this.type = 'warning';
-    }, 3000);
-  }
 }
