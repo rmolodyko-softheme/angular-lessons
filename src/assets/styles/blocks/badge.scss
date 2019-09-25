@@ -1,0 +1,59 @@
+.badge {
+    border: 1px solid #eee;
+    border-radius: 3px;
+
+    &.active {
+        background-color: #84e684;
+        border-color: green;
+    }
+
+    &.disabled {
+        background-color: #f5f550;
+        border-color: yellow;
+    }
+
+    &.deleted {
+        background-color: #f58484;
+        border-color: red;
+    }
+
+    &.unknown {
+        background-color: #c1c1c1;
+        border-color: gray;
+    }
+}
+
+.badge-attributive {
+    &.hide-badge::after {
+        display: none !important;
+    }
+
+    &::after {
+        display: block;
+        border: 1px solid #eee;
+        border-radius: 3px;
+        padding: 2px;
+
+        content: 'Unknown';
+        background-color: #c1c1c1;
+        border-color: gray;
+    }
+
+    &.budget-active::after {
+        content: 'Active';
+        background-color: #84e684;
+        border-color: green;
+    }
+
+    &.budget-disabled::after {
+        content: 'Disabled';
+        background-color: #f5f550;
+        border-color: yellow;
+    }
+
+    &.budget-deleted::after {
+        content: 'Active';
+        background-color: #f58484;
+        border-color: red;
+    }
+}

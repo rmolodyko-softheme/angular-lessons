@@ -1,1 +1,50 @@
-<div>{{ name }}</div>
+<ul class="list" *ngIf="users.length > 0; else emptyList">
+  <ng-container *ngFor="let user of users;index as i; trackBy: trackByFn">
+    <ng-container *ngIf="user.isVisible">
+      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
+        <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name }}</span>
+        <!--<app-badge-component [status]="user.status"></app-badge-component>-->
+        <ng-template [ngTemplateOutlet]="badgeInfoTemplate" [ngTemplateOutletContext]="{ status: user.status, $implicit: user }"></ng-template>
+      </li>
+    </ng-container>
+  </ng-container>
+</ul>
+
+<div class="user-info" *ngIf="getUserById(selectedUserId) as user; else emptySelectedUser">
+  <div class="user-avatar">
+    <img [attr.src]="user.logo">
+  </div>
+  <div class="user-info-content">
+    <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
+    <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
+    <div class="user-info-content-item">
+      <ng-template
+        [ngTemplateOutlet]="badgeInfoTemplate"
+        [ngTemplateOutletContext]="{ status: user.status, $implicit: user }">
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<ng-template #badgeInfoTemplate let-user let-status="status">
+  <ng-container [ngSwitch]="status">
+    <div class="badge active" *ngSwitchCase="statusTypes.Active">Active</div>
+    <div class="badge disabled" *ngSwitchCase="statusTypes.Disabled">Disabled</div>
+    <div class="badge deleted" *ngSwitchCase="statusTypes.Deleted">Deleted</div>
+    <div class="badge unknown" *ngSwitchDefault>Unknown</div>
+  </ng-container>
+</ng-template>
+
+<ng-template #emptyList>
+  <div class="empty-list">There are no items</div>
+</ng-template>
+
+<ng-template #emptySelectedUser>
+  <div class="empty-list">There is no selected user</div>
+</ng-template>
+
+<div class="control-buttons">
+  <button (click)="startLoadingUsers()">Load users</button>
+
+  <button *ngIf="users.length > 0 && !getUserById(6)" (click)="addPeter()">Add Peter</button>
+</div>
