@@ -1,10 +1,10 @@
 <ul class="list" *ngIf="users.length > 0; else emptyList">
   <ng-container *ngFor="let user of users;index as i; trackBy: trackByFn">
     <ng-container *ngIf="user.isVisible">
-      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
+      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id" [appBadgeAttributive]="user.status">
         <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name }}</span>
         <!--<app-badge-component [status]="user.status"></app-badge-component>-->
-        <ng-template [ngTemplateOutlet]="badgeInfoTemplate" [ngTemplateOutletContext]="{ status: user.status, $implicit: user }"></ng-template>
+        <!--<ng-template [ngTemplateOutlet]="badgeInfoTemplate" [ngTemplateOutletContext]="{ status: user.status, $implicit: user }"></ng-template>-->
       </li>
     </ng-container>
   </ng-container>

@@ -2,7 +2,10 @@ import { Directive, ElementRef, HostBinding, HostListener, Input } from '@angula
 import { UserStatus } from '../models/user';
 
 @Directive({
-  selector: '[appBadgeAttributive]'
+  selector: '[appBadgeAttributive]',
+  host: {
+    '[class.hide-badge]': 'isHideBadge'
+  }
 })
 export class BadgeAttributiveDirective {
   @Input('appBadgeAttributive') set status(status: UserStatus) {
@@ -15,7 +18,8 @@ export class BadgeAttributiveDirective {
     this.isHideBadge = !this.isHideBadge;
   }
 
-  @HostBinding('class.hide-badge') isHideBadge = false;
+  // @HostBinding('class.hide-badge') isHideBadge = false;
+  isHideBadge = false;
 
   constructor(private element: ElementRef) {
     this.element.nativeElement.classList.add('badge-attributive');
