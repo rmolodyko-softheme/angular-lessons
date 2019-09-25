@@ -11,16 +11,6 @@ const users = USERS;
 })
 export class AppComponent {
   users: User[] = [];
-  statusTypes = UserStatus;
-  selectedUserId: number;
-
-  trackByFn(index: number, user: User) {
-    return user.id;
-  }
-
-  getUserById(id: number) {
-    return this.users.find(user => user.id === id);
-  }
 
   // -----------------------------------
 
