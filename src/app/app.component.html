@@ -1,10 +1,9 @@
 <ul class="list" *ngIf="users.length > 0; else emptyList">
   <ng-container *ngFor="let user of users;index as i; trackBy: trackByFn">
     <ng-container *ngIf="user.isVisible">
-      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id" [appBadgeAttributive]="user.status">
+      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
         <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name }}</span>
-        <!--<app-badge-component [status]="user.status"></app-badge-component>-->
-        <!--<ng-template [ngTemplateOutlet]="badgeInfoTemplate" [ngTemplateOutletContext]="{ status: user.status, $implicit: user }"></ng-template>-->
+        <app-badge-component [status]="user.status"></app-badge-component>
       </li>
     </ng-container>
   </ng-container>
@@ -18,22 +17,10 @@
     <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
     <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
     <div class="user-info-content-item">
-      <ng-template
-        [ngTemplateOutlet]="badgeInfoTemplate"
-        [ngTemplateOutletContext]="{ status: user.status, $implicit: user }">
-      </ng-template>
+      <app-badge-component [status]="user.status"></app-badge-component>
     </div>
   </div>
 </div>
-
-<ng-template #badgeInfoTemplate let-user let-status="status">
-  <ng-container [ngSwitch]="status">
-    <div class="badge active" *ngSwitchCase="statusTypes.Active">Active</div>
-    <div class="badge disabled" *ngSwitchCase="statusTypes.Disabled">Disabled</div>
-    <div class="badge deleted" *ngSwitchCase="statusTypes.Deleted">Deleted</div>
-    <div class="badge unknown" *ngSwitchDefault>Unknown</div>
-  </ng-container>
-</ng-template>
 
 <ng-template #emptyList>
   <div class="empty-list">There are no items</div>
