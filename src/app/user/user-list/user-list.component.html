@@ -1,5 +1,14 @@
 <ul class="list" *ngIf="users.length > 0; else emptyList">
-  <ng-container *ngFor="let user of users;index as i; trackBy: trackByFn">
+  <div class="filter">
+    <input [value]="filterValue" class="filter-input" placeholder="Input text filter here" #input (keyup)="filterValue = input.value">
+    <select class="filter-input" #select [value]="filterStatus" (change)="filterStatus = select.value">
+      <option [selected]="true" [value]="''">None</option>
+      <option *ngFor="let item of userStatusService.statuses()" [value]="item.value">{{ item.text }}</option>
+    </select>
+    <button class="filter-input" (click)="filterStatus = ''; filterValue = ''">Reset filters</button>
+  </div>
+
+  <ng-container *ngFor="let user of filterUsers();index as i; trackBy: trackByFn">
     <ng-container *ngIf="user.isVisible">
       <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
         <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name }}</span>
@@ -29,7 +38,3 @@
 <ng-template #emptySelectedUser>
   <div class="empty-list">There is no selected user</div>
 </ng-template>
-
-<div class="control-buttons">
-  <button (click)="startLoadingUsers()">Load users</button>
-</div>

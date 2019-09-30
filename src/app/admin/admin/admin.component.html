@@ -1,3 +1,14 @@
-<p>
-  admin works!
-</p>
+<div class="item"><b>Add new user</b></div>
+
+<div class="item">
+  <input #input placeholder="Input user name">
+</div>
+<div class="item">
+  <select #select>
+    <option *ngFor="let item of userStatusService.statuses()" [value]="item.value">{{ item.text }}</option>
+  </select>
+</div>
+<div class="item">
+  <button (click)="add(input.value, select.value); input.value = ''">Add</button>
+  <button routerLink="/user-list">Back to user list</button>
+</div>
