@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { User } from './models/user';
-import { USERS } from './mock-data/users';
-
-const users = USERS;
+import { UserDataService } from './user/services/user-data.service';
+import { Logger } from './loggers/logger';
+import { LogLevel } from './loggers/console-logger.service';
 
 @Component({
   selector: 'app-root',
@@ -10,22 +9,7 @@ const users = USERS;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  users: User[] = [];
-  selectedUserId: number;
-
-  trackByFn(index: number, user: User) {
-    return user.id;
-  }
-
-  getUserById(id: number) {
-    return this.users.find(user => user.id === id);
-  }
-
-  // -----------------------------------
-
-  startLoadingUsers() {
-    console.info('Load users');
-    // this.users = users;
-    this.users = JSON.parse(JSON.stringify(users)); // Emulate immutable data
+  constructor(private userDataService: UserDataService, private loggerService: Logger) {
+    this.loggerService.log('Hello from app', LogLevel.WARNING);
   }
 }

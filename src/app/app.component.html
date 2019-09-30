@@ -1,35 +1,6 @@
-<ul class="list" *ngIf="users.length > 0; else emptyList">
-  <ng-container *ngFor="let user of users;index as i; trackBy: trackByFn">
-    <ng-container *ngIf="user.isVisible">
-      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
-        <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name }}</span>
-        <app-badge-component [status]="user.status"></app-badge-component>
-      </li>
-    </ng-container>
-  </ng-container>
+<ul>
+  <li><a routerLink="/user-list">User List</a></li>
+  <li><a routerLink="/admin">Admin</a></li>
 </ul>
 
-<div class="user-info" *ngIf="getUserById(selectedUserId) as user; else emptySelectedUser">
-  <div class="user-avatar">
-    <img [attr.src]="user.logo">
-  </div>
-  <div class="user-info-content">
-    <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
-    <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
-    <div class="user-info-content-item">
-      <app-badge-component [status]="user.status"></app-badge-component>
-    </div>
-  </div>
-</div>
-
-<ng-template #emptyList>
-  <div class="empty-list">There are no items</div>
-</ng-template>
-
-<ng-template #emptySelectedUser>
-  <div class="empty-list">There is no selected user</div>
-</ng-template>
-
-<div class="control-buttons">
-  <button (click)="startLoadingUsers()">Load users</button>
-</div>
+<router-outlet></router-outlet>
