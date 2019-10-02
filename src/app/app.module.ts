@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { registerLocaleData } from '@angular/common';
+import localeUA from '@angular/common/locales/uk';
+registerLocaleData(localeUA, 'ua');
+
 import { AppComponent } from './app.component';
 import { UserModule } from './user/user.module';
 import { AppRoutingModule } from './app-routing.module';

@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { UserStatus } from '../models/user';
+import { Gender, User, UserStatus } from '../models/user';
 
 @Injectable()
 export class UserDataService {
   rand = Math.random();
 
-  private users = [
+  private users: User[] = [
     {
       id: 1,
       name: 'Ruslan',
       status: UserStatus.Active,
       isVisible: true,
+      date: new Date(),
+      earned: 324.23,
+      gender: Gender.Male,
       logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=identicon&f=y'
     },
     {
@@ -18,6 +21,9 @@ export class UserDataService {
       name: 'Roman',
       status: UserStatus.Deleted,
       isVisible: true,
+      date: new Date(),
+      earned: 24,
+      gender: Gender.Male,
       logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=monsterid&f=y'
     },
     {
@@ -25,18 +31,27 @@ export class UserDataService {
       name: 'Alex',
       status: UserStatus.Disabled,
       isVisible: true,
+      date: new Date(),
+      earned: 343,
+      gender: Gender.Male,
       logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=wavatar&f=y'
     },
     {
       id: 4,
       name: 'Megan',
       isVisible: false,
+      date: new Date(),
+      earned: 4.3,
+      gender: Gender.Female,
       logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=retro&f=y'
     },
     {
       id: 5,
       name: 'Alisa',
       isVisible: true,
+      date: new Date(),
+      earned: 30000,
+      gender: Gender.Female,
       logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=robohash&f=y'
     }
   ];
@@ -51,6 +66,9 @@ export class UserDataService {
       name: name,
       status: status,
       isVisible: true,
+      date: new Date(),
+      earned: 324,
+      gender: Gender.Male,
       logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=robohash&f=y'
     });
   }
