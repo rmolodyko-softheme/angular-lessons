@@ -1,6 +1,6 @@
 <ul class="list" *ngIf="users.length > 0; else emptyList">
   <div class="filter">
-    <input #input [value]="filterValue" class="filter-input" placeholder="Input text filter here" #input (keyup)="filterValue = input.value">
+    <input #input [value]="filterValue" class="filter-input" placeholder="Input text filter here" #input>
     <select class="filter-input" #select [value]="filterStatus" (change)="filterStatus = select.value">
       <option [selected]="true" [value]="''">None</option>
       <option *ngFor="let item of userStatusService.statuses()" [value]="item.value">{{ item.text }}</option>
@@ -11,7 +11,7 @@
   <ng-container *ngFor="let user of filterUsers();index as i; trackBy: trackByFn">
     <ng-container *ngIf="user.isVisible">
       <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
-        <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name | prefixName:user.gender }}</span>
+        <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name | prefixName:user.gender | badgeText:user.status }}</span>
         <app-badge-component [status]="user.status"></app-badge-component>
       </li>
     </ng-container>

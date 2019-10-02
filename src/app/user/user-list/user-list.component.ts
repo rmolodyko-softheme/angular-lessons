@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { User } from '../models/user';
 import { UserDataService } from '../services/user-data.service';
 import { UserStatusService } from '../services/user-status.service';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-list',
@@ -14,7 +16,9 @@ export class UserListComponent implements OnInit /**, AfterViewInit **/ {
   filterValue = '';
   filterStatus = '';
 
-  // @ViewChild
+  @ViewChild('input') input: ElementRef;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(private userDataService: UserDataService, public userStatusService: UserStatusService) {
   }
@@ -38,7 +42,16 @@ export class UserListComponent implements OnInit /**, AfterViewInit **/ {
     this.users = this.userDataService.load();
   }
 
-  // ngAfterViewInit() {
-  //   fromEvent()
-  // }
+  ngAfterViewInit() {
+    this.subscriptions.push(
+      fromEvent(this.input.nativeElement, 'keyup').pipe(debounceTime(2000)).subscribe((event: Event) => {
+        this.filterValue = (event.target as HTMLInputElement).value;
+      })
+    );
+  }
+
+  ngOnDestory() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 }
+
