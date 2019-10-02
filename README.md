@@ -1,27 +1,36 @@
-# TemplatesAndDirectives
+Roadmap 6. Pipes and observables
+1.	Tell about observables
+2.	Show simple example with timer
+3.	Show example with keyup event on the input
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
+    a.	Use UPPERCASE
+    b.	Filter values
+    c.	Show how to catch errors
+    d.	Show how to complete
+4.	Show how to unsubscribe
+5.	Show promise
+6.	Use data pipe for users
 
-## Development server
+    a.	Add data field to users list
+    b.	Show the data pipe
+    c.	Tell about formats
+        i.	https://angular.io/api/common/DatePipe
+    d.	Tell about timezone
+    e.	Tell about locale
+        i.	import { registerLocaleData } from '@angular/common';
+        ii.	import localeUA from '@angular/common/locales/uk';
+        iii.	registerLocaleData(localeUA, 'ua');
+    f.	Show how to chain pipes
+7.	Tell about uppercase
+8.	Tell about lowercase
+9.	Tell about titlecase
+10.	Tell about currency pipe
+11.	Tell about json pipe
+12.	Create custom prefix-name pipe
+13.	Tell the task
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    a.	Create custom badgeText pipe 
+        i.	Use it in the list
+        ii.	Create service BadgeEnumToString
+        iii.	Use it inside the badgeText pipe
+    b.	Create observable from input event and use debounce time
