@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { UserDataService } from '../services/user-data.service';
 import { UserStatusService } from '../services/user-status.service';
@@ -8,13 +8,11 @@ import { UserStatusService } from '../services/user-status.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit /**, AfterViewInit **/ {
+export class UserListComponent implements OnInit {
   users: User[] = [];
   selectedUserId: number;
   filterValue = '';
   filterStatus = '';
-
-  // @ViewChild
 
   constructor(private userDataService: UserDataService, public userStatusService: UserStatusService) {
   }
@@ -37,8 +35,4 @@ export class UserListComponent implements OnInit /**, AfterViewInit **/ {
   ngOnInit() {
     this.users = this.userDataService.load();
   }
-
-  // ngAfterViewInit() {
-  //   fromEvent()
-  // }
 }
