@@ -17,11 +17,6 @@ export class ChatService {
     return this.messagesSubject.asObservable();
   }
 
-  get users$() {
-    return this.usersSubject.asObservable();
-  }
-
-  private usersSubject = new BehaviorSubject<string[]>([]);
   private messagesSubject = new BehaviorSubject<Message[]>([]);
 
   private ready = new BehaviorSubject<boolean>(false);
@@ -41,9 +36,7 @@ export class ChatService {
         try {
           const data = JSON.parse(message.data);
           const list = this.messagesSubject.value.slice();
-          if (data.type === 'users') {
-            this.usersSubject.next(data.data);
-          } else if (data.type === 'history') {
+          if (data.type === 'history') {
             list.push(...data.data.map(data => ({ ...data, time: new Date(data.time) })));
             this.messagesSubject.next(list);
           } else if (data.type === 'message') {

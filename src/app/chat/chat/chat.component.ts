@@ -11,9 +11,7 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   currentUser: string;
-  users: string[] = [];
   messages$: Observable<Message[]>;
-  users$: Observable<string[]>;
   chatWith: string;
   updateSubject = new Subject();
 
@@ -47,8 +45,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         )
       ))
     );
-
-    this.users$ = this.chatService.users$.pipe(map(users => users.filter(user => user !== this.currentUser)))
   }
 
   ngOnDestroy() {
