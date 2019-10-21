@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConsoleLoggerService, DEFAULT_LOG_LEVEL, LogLevel } from './loggers/console-logger.service';
 import { LOGGER, Logger } from './loggers/logger';
 import { DbLoggerService } from './loggers/db-logger.service';
+import { MatDialogModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const isDbLogger = window.location.href.indexOf('logger=db') !== -1;
 const isBothLoggers = window.location.href.indexOf('logger=both') !== -1;
@@ -22,7 +24,9 @@ const isBothLoggers = window.location.href.indexOf('logger=both') !== -1;
   imports: [
     BrowserModule,
     UserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   bootstrap: [AppComponent],
   providers: [

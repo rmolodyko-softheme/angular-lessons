@@ -1,0 +1,36 @@
+<div class="no-user" *ngIf="!currentUser; else chatTemplate">
+  There is no selected user, please go to the <a routerLink="/user-list">user list</a> and select the user.
+</div>
+
+<ng-template #chatTemplate>
+  <div class="chat-block">
+    <div class="users" *ngIf="(users$ | async) as users">
+      <div class="item"><b>Online ({{ users.length }})</b></div>
+      <div *ngFor="let user of users"><a routerLink="/chat/{{ user }}">{{ user }}</a></div>
+    </div>
+    <div class="chat-container">
+      <div class="item"><b>Chat</b></div>
+      <ng-container *ngIf="(users$ | async) as users">
+        <div *ngIf="users && users.length">
+          <label>Filter by: </label>
+          <select (change)="chatWith = $event.target.value;updateSubject.next()">
+            <option [value]="''">All</option>
+            <option *ngFor="let name of users" [value]="name">{{ name }}</option>
+          </select>
+        </div>
+      </ng-container>
+      <div class="chat" #chat>
+        <div class="message-container" *ngFor="let message of messages$ | async" [class.you]="currentUser === message.author">
+          <div class="message-item">
+            <div class="message-author" [style.color]="message.color">{{ message.author }} <span>{{ message.time | date:'shortTime' }}</span></div>
+            <div class="message">{{ message.text }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="input">
+        <textarea #input (keyup.enter)="enter()"></textarea>
+        <button (click)="enter()">Send</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

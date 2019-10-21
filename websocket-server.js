@@ -13,6 +13,7 @@ var http = require('http');
 var history = [ ];
 // list of currently connected clients (users)
 var clients = [ ];
+var users = [ ];
 /**
  * Helper function for escaping input strings
  */
@@ -75,6 +76,10 @@ wsServer.on('request', function(request) {
                 userColor = colors.shift();
                 connection.sendUTF(
                     JSON.stringify({ type:'color', data: userColor }));
+
+                users.push(userName);
+                broadcast({ type:'users', data: users });
+
                 console.log((new Date()) + ' User is known as: ' + userName
                     + ' with ' + userColor + ' color.');
             } else { // log and broadcast the message
@@ -91,10 +96,7 @@ wsServer.on('request', function(request) {
                 history.push(obj);
                 history = history.slice(-100);
                 // broadcast message to all connected clients
-                var json = JSON.stringify({ type:'message', data: obj });
-                for (var i=0; i < clients.length; i++) {
-                    clients[i].sendUTF(json);
-                }
+                broadcast({ type:'message', data: obj });
             }
         }
     });
@@ -107,6 +109,16 @@ wsServer.on('request', function(request) {
             clients.splice(index, 1);
             // push back user's color to be reused by another user
             colors.push(userColor);
+            users = users.filter(user => user !== userName);
+
+            broadcast({ type:'users', data: users });
         }
     });
+
+    function broadcast(data) {
+        var json = JSON.stringify(data);
+        for (var i=0; i < clients.length; i++) {
+            clients[i].sendUTF(json);
+        }
+    }
 });
