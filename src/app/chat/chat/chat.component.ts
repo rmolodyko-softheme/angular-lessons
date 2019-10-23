@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChatService, Message } from '../services/chat.service';
-import { UserService } from '../../user/services/user.service';
 import { Observable, Subject, merge } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, first, map, switchMap } from 'rxjs/operators';
+import { AppState } from '../../app.state';
+import { Store } from '@ngrx/store';
+import { selectCurrentUser } from '../../user/+state/user.selectors';
 
 @Component({
   selector: 'app-chat',
@@ -21,21 +23,23 @@ export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('chat') chat: ElementRef;
 
   constructor(
-    private userService: UserService,
+    private store: Store<AppState>,
     public chatService: ChatService
   ) {
   }
 
   ngOnInit() {
-    this.currentUser = this.userService.getUser();
+    this.store.select(selectCurrentUser).pipe(filter(username => !!username), first()).subscribe(username => {
+      this.currentUser = username;
 
-    if (this.currentUser) {
-      this.chatService.init(this.currentUser).subscribe(() => {
-        setTimeout(() => {
-          this.chat.nativeElement.scrollTo(0, this.chat.nativeElement.scrollHeight);
+      if (this.currentUser) {
+        this.chatService.init(this.currentUser).subscribe(() => {
+          setTimeout(() => {
+            this.chat.nativeElement.scrollTo(0, this.chat.nativeElement.scrollHeight);
+          });
         });
-      });
-    }
+      }
+    });
 
     this.messages$ = merge(
       this.updateSubject,

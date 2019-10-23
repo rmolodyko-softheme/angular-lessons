@@ -28,6 +28,8 @@ export class ChatService {
   private connection;
 
   init(userName: string) {
+    this.destroy();
+
     this.connection = new (window as any).WebSocket('ws://127.0.0.1:1337');
     this.connection.onopen = () => this.ready.next(true);
 

@@ -3,7 +3,7 @@
   <li class="header-item" routerLinkActive="active"><a routerLink="/chat">Chat</a></li>
   <li class="header-item" routerLinkActive="active"><a routerLink="/admin">Admin</a></li>
 
-  <li class="user" *ngIf="userService.getUser()">Current user: {{ userService.getUser() }} <button (click)="remove()">X</button></li>
+  <li class="user" *ngIf="(username$ | async) as username">Current user: {{ username }} <button (click)="remove()">X</button></li>
 </ul>
 
 <router-outlet></router-outlet>

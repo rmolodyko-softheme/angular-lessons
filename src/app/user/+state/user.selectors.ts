@@ -5,3 +5,4 @@ const selectUserFeature = (state: AppState) => state.user;
 
 export const selectUsers = createSelector(selectUserFeature, state => state.list);
 export const selectUser = createSelector(selectUserFeature, (state, params) => state.list.find(user => user.id === params.id));
+export const selectCurrentUser = createSelector(selectUserFeature, state => state.currentUsername);
