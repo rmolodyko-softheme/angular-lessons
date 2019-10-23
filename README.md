@@ -1,27 +1,45 @@
-# TemplatesAndDirectives
+1. Install ngrx
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.9.
+    ``` npm install @ngrx/store --save ```
+2. Show example with counter
 
-## Development server
+    ```
+    a. Create +state folder
+    b. Create reducer, selectors and actions folders
+    c. Create increment and decrement actions
+    d. Create counter reducer
+    e. Set up the app module store reducers: StoreModule.forRoot({ count: counterReducer })
+    i. Add increment and decrement buttons to app component
+    j. Install devtools
+    u. Show that state changes when clicking
+    p. Implement count displaying on the app component
+    k. Add selector 
+        createSelector((state: { count: CounterState }) => state.count, state => state.count)
+    g. Show how to pass the params to the actions
+    ```
+3. Rewrite user list service using the ngrx
+    
+   ```
+   a. Tell the problem of user list service
+   b. Copy state to user module
+   c. Create addUser action, userReducer, userListSelector
+   d. Add feature: StoreModule.forFeature('user', userReducer)
+   e. Add Dispatch addUser in AdminComponent when adding a user
+   f. Add getting users via async pipe inside user list.
+   h. Add get user by id selector
+   k. Implement filter change subject
+   j. Remove user data service
+   m. Implement saving user-list to localstorage: ngrx-store-localstorage
+   l. Implement rehydrate
+   ```
+4. Implement effects
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+   ```
+   a. Install effects: npm install @ngrx/effects --save
+   b. Create user effect
+   c. Implement logger effect to add user action
+   d. Add snakbar to effect
+   ```
+5. Tell them the task for moving current user logic to ngrx
+6. Tell them the task for adding effect for logging adding user to the chat
+    

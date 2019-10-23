@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { User } from '../models/user';
-import { UserDataService } from '../services/user-data.service';
 import { UserStatusService } from '../services/user-status.service';
-import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { selectUser, selectUsers } from '../+state/user.selectors';
+import { AppState } from '../../app.state';
 
 @Component({
   selector: 'app-user-list',
@@ -11,16 +13,20 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit /**, AfterViewInit **/ {
-  users: User[] = [];
+  users$: Observable<User[]>;
   selectedUserId: number;
   filterValue = '';
   filterStatus = '';
 
   @ViewChild('input') input: ElementRef;
 
+  private filterChangeSubject = new Subject();
   private subscriptions: Subscription[] = [];
 
-  constructor(private userDataService: UserDataService, public userStatusService: UserStatusService) {
+  constructor(
+    private store: Store<AppState>,
+    public userStatusService: UserStatusService,
+  ) {
   }
 
   trackByFn(index: number, user: User) {
@@ -28,24 +34,24 @@ export class UserListComponent implements OnInit /**, AfterViewInit **/ {
   }
 
   getUserById(id: number) {
-    return this.users.find(user => user.id === id);
-  }
-
-  filterUsers() {
-    return this.users
-      .filter(item => this.filterValue ? item.name.toLowerCase().indexOf(this.filterValue.toLowerCase()) !== -1 : item)
-      .filter(item => (this.filterStatus !== undefined && this.filterStatus.toString() !== '') ? item.status === +this.filterStatus : item)
-    ;
+    return this.store.select(selectUser, { id });
   }
 
   ngOnInit() {
-    this.users = this.userDataService.load();
+    this.users$ = merge(
+      this.filterChangeSubject,
+      this.store
+    ).pipe(switchMap(() => this.store.select(selectUsers).pipe(map(users => users
+        .filter(item => this.filterValue ? item.name.toLowerCase().indexOf(this.filterValue.toLowerCase()) !== -1 : item)
+        .filter(item => (this.filterStatus !== undefined && this.filterStatus.toString() !== '') ? item.status === +this.filterStatus : item)
+    ))));
   }
 
   ngAfterViewInit() {
     this.subscriptions.push(
       fromEvent(this.input.nativeElement, 'keyup').pipe(debounceTime(2000)).subscribe((event: Event) => {
         this.filterValue = (event.target as HTMLInputElement).value;
+        this.filterChangeSubject.next();
       })
     );
   }

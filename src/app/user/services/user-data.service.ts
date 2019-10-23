@@ -59,17 +59,4 @@ export class UserDataService {
   load() {
     return JSON.parse(JSON.stringify(this.users)); // Emulate immutable data
   }
-
-  add(name: string, status: UserStatus) {
-    this.users.push({
-      id: Math.max(...this.users.map(item => item.id)) + 1,
-      name: name,
-      status: status,
-      isVisible: true,
-      date: new Date(),
-      earned: 324,
-      gender: Gender.Male,
-      logo: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=robohash&f=y'
-    });
-  }
 }

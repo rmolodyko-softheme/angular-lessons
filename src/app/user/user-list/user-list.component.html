@@ -1,38 +1,40 @@
-<ul class="list" *ngIf="users.length > 0; else emptyList">
+<ng-container *ngIf="(users$ | async) as users; else emptyList">
   <div class="filter">
     <input #input [value]="filterValue" class="filter-input" placeholder="Input text filter here" #input>
-    <select class="filter-input" #select [value]="filterStatus" (change)="filterStatus = select.value">
+    <select class="filter-input" #select [value]="filterStatus" (change)="filterStatus = select.value;filterChangeSubject.next()">
       <option [selected]="true" [value]="''">None</option>
       <option *ngFor="let item of userStatusService.statuses()" [value]="item.value">{{ item.text }}</option>
     </select>
-    <button class="filter-input" (click)="filterStatus = ''; filterValue = ''">Reset filters</button>
+    <button class="filter-input" (click)="filterStatus = ''; filterValue = '';filterChangeSubject.next()">Reset filters</button>
   </div>
 
-  <ng-container *ngFor="let user of filterUsers();index as i; trackBy: trackByFn">
-    <ng-container *ngIf="user.isVisible">
-      <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
-        <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name | prefixName:user.gender | badgeText:user.status }}</span>
-        <app-badge-component [status]="user.status"></app-badge-component>
-      </li>
+  <ul class="list" *ngIf="users.length > 0; else emptyList">
+    <ng-container *ngFor="let user of users;index as i; trackBy: trackByFn">
+      <ng-container *ngIf="user.isVisible">
+        <li class="list-item" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
+          <span class="item-name" [attr.title]="user.name">{{ i + 1 }}. {{ user.name | prefixName:user.gender | badgeText:user.status }}</span>
+          <app-badge-component [status]="user.status"></app-badge-component>
+        </li>
+      </ng-container>
     </ng-container>
-  </ng-container>
-</ul>
+  </ul>
 
-<div class="user-info" *ngIf="getUserById(selectedUserId) as user; else emptySelectedUser">
-  <div class="user-avatar">
-    <img [attr.src]="user.logo">
-  </div>
-  <div class="user-info-content">
-    <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
-    <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
-    <div class="user-info-content-item">Date: <b>{{ user.date | date:"medium":"+0300":"ua" }}</b></div>
-    <div class="user-info-content-item">Earned: <b>{{ user.earned | currency:"EUR" }}</b></div>
-    <!--<div class="user-info-content-item">JSON: <b>{{ user | json }}</b></div>-->
-    <div class="user-info-content-item">
-      <app-badge-component [status]="user.status"></app-badge-component>
+  <div class="user-info" *ngIf="(getUserById(selectedUserId) | async) as user; else emptySelectedUser">
+    <div class="user-avatar">
+      <img [attr.src]="user.logo">
+    </div>
+    <div class="user-info-content">
+      <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
+      <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
+      <div class="user-info-content-item">Date: <b>{{ user.date | date:"medium":"+0300":"ua" }}</b></div>
+      <div class="user-info-content-item">Earned: <b>{{ user.earned | currency:"EUR" }}</b></div>
+      <!--<div class="user-info-content-item">JSON: <b>{{ user | json }}</b></div>-->
+      <div class="user-info-content-item">
+        <app-badge-component [status]="user.status"></app-badge-component>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
 
 <ng-template #emptyList>
   <div class="empty-list">There are no items</div>
