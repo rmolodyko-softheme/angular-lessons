@@ -8,7 +8,7 @@ import { UserStatusService } from '../services/user-status.service';
 import { PrefixNamePipe } from '../prefix-name/prefix-name.pipe';
 import { BadgeTextPipe } from '../badge-text/badge-text.pipe';
 import { BadgeComponent } from '../badge-component/badge.component';
-import { User } from '../models/user';
+import { User, UserStatus } from '../models/user';
 
 describe('UserListComponent', () => {
   let component: UserListComponent;
@@ -16,10 +16,12 @@ describe('UserListComponent', () => {
   let userDataServiceSpy = jasmine.createSpyObj('UserDataService', ['load']);
   userDataServiceSpy.load.and.returnValue([{
     name: 'Ruslan',
-    isVisible: true
+    isVisible: true,
+    status: UserStatus.Active
   }, {
     name: 'Roman',
-    isVisible: true
+    isVisible: true,
+    status: UserStatus.Disabled
   }] as User[]);
 
   beforeEach(async(() => {
@@ -40,13 +42,26 @@ describe('UserListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Should be able to add a user', fakeAsync(() => {
+  it('Should be able to filter users by input', fakeAsync(() => {
     expect(fixture.componentInstance.users.length).toBe(2);
     const input = fixture.debugElement.query(By.css('input'));
     input.nativeElement.value = 'Ru';
     input.nativeElement.dispatchEvent(new Event('keyup'));
 
     tick(2000);
+
+    fixture.detectChanges();
+
+    const list = fixture.debugElement.queryAll(By.css('span[class="item-name"]'));
+    expect(list.length).toBe(1);
+    expect(list[0].nativeElement.innerText).toMatch('Ruslan');
+  }));
+
+  it('Should be able to filter users by select', fakeAsync(() => {
+    expect(fixture.componentInstance.users.length).toBe(2);
+    const input = fixture.debugElement.query(By.css('select'));
+    input.nativeElement.value = '0';
+    input.nativeElement.dispatchEvent(new Event('change'));
 
     fixture.detectChanges();
 
