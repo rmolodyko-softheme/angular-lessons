@@ -56,17 +56,4 @@ describe('UserListComponent', () => {
     expect(list.length).toBe(1);
     expect(list[0].nativeElement.innerText).toMatch('Ruslan');
   }));
-
-  it('Should be able to filter users by select', fakeAsync(() => {
-    expect(fixture.componentInstance.users.length).toBe(2);
-    const input = fixture.debugElement.query(By.css('select'));
-    input.nativeElement.value = '0';
-    input.nativeElement.dispatchEvent(new Event('change'));
-
-    fixture.detectChanges();
-
-    const list = fixture.debugElement.queryAll(By.css('span[class="item-name"]'));
-    expect(list.length).toBe(1);
-    expect(list[0].nativeElement.innerText).toMatch('Ruslan');
-  }));
 });
