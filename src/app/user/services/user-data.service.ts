@@ -57,10 +57,12 @@ export class UserDataService {
   ];
 
   load() {
+    console.log(this.users);
     return JSON.parse(JSON.stringify(this.users)); // Emulate immutable data
   }
 
   add(name: string, status: UserStatus) {
+    console.log('add', name);
     this.users.push({
       id: Math.max(...this.users.map(item => item.id)) + 1,
       name: name,

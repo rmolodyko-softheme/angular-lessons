@@ -17,6 +17,7 @@ export class AdminComponent {
   }
 
   add(name: string, status: UserStatus) {
+    console.log('add');
     this.userDataService.add(name, +status)
   }
 }
