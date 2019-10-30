@@ -24,7 +24,7 @@
   </div>
   <div class="user-info-content">
     <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
-    <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
+    <div class="user-info-content-item" data-test="user-info:username">Username: <b>{{ user.name }}</b></div>
     <div class="user-info-content-item">Date: <b>{{ user.date | date:"medium":"+0300":"ua" }}</b></div>
     <div class="user-info-content-item">Earned: <b>{{ user.earned | currency:"EUR" }}</b></div>
     <!--<div class="user-info-content-item">JSON: <b>{{ user | json }}</b></div>-->
