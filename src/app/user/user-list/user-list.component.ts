@@ -4,10 +4,33 @@ import { UserDataService } from '../services/user-data.service';
 import { UserStatusService } from '../services/user-status.service';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
+    selector: 'app-user-list',
+    templateUrl: './user-list.component.html',
+    animations: [
+      trigger('openClose', [
+        state('selected', style({
+          backgroundColor: '#eee',
+        })),
+        state('not-selected', style({
+          backgroundColor: 'white',
+        })),
+        transition(':enter', [
+          style({
+            transform: 'translateX(-100%)',
+          }),
+          animate('1s 0.02s')
+        ]),
+        transition('not-selected <=> selected', [
+          animate('1s')
+        ]),
+        transition(':leave', [animate('1s', style({
+          transform: 'translateX(100%)'
+        }))])
+      ])
+    ],
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit /**, AfterViewInit **/ {
@@ -15,6 +38,7 @@ export class UserListComponent implements OnInit /**, AfterViewInit **/ {
   selectedUserId: number;
   filterValue = '';
   filterStatus = '';
+  isSelected = false;
 
   @ViewChild('input') input: ElementRef;
 
@@ -35,7 +59,7 @@ export class UserListComponent implements OnInit /**, AfterViewInit **/ {
     return this.users
       .filter(item => this.filterValue ? item.name.toLowerCase().indexOf(this.filterValue.toLowerCase()) !== -1 : item)
       .filter(item => (this.filterStatus !== undefined && this.filterStatus.toString() !== '') ? item.status === +this.filterStatus : item)
-    ;
+      ;
   }
 
   ngOnInit() {

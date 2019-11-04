@@ -1,7 +1,7 @@
 <ul class="list" *ngIf="users.length > 0; else emptyList">
   <div class="filter">
     <input #input [value]="filterValue" class="filter-input" placeholder="Input text filter here" #input>
-    <select class="filter-input" #select [value]="filterStatus" (change)="filterStatus = select.value">
+    <select class="filter-input" #select [value]="filterStatus" (change)="filterStatus = select.value;isSelected = false">
       <option [selected]="true" [value]="''">None</option>
       <option *ngFor="let item of userStatusService.statuses()" [value]="item.value">{{ item.text }}</option>
     </select>
@@ -18,20 +18,28 @@
   </ng-container>
 </ul>
 
-<div class="user-info" *ngIf="getUserById(selectedUserId) as user; else emptySelectedUser">
-  <div class="user-avatar">
-    <img [attr.src]="user.logo">
-  </div>
-  <div class="user-info-content">
-    <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
-    <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
-    <div class="user-info-content-item">Date: <b>{{ user.date | date:"medium":"+0300":"ua" }}</b></div>
-    <div class="user-info-content-item">Earned: <b>{{ user.earned | currency:"EUR" }}</b></div>
-    <!--<div class="user-info-content-item">JSON: <b>{{ user | json }}</b></div>-->
-    <div class="user-info-content-item">
-      <app-badge-component [status]="user.status"></app-badge-component>
-    </div>
-  </div>
+<div class="user-info-base">
+  <ng-container *ngFor="let user of filterUsers(); trackBy: trackByFn">
+    <ng-container *ngIf="user.id === selectedUserId">
+      <div class="user-info" [@openClose]="isSelected ? 'selected' : 'not-selected'">
+        <div class="user-avatar">
+          <img [attr.src]="user.logo">
+        </div>
+        <div class="user-info-content">
+          <div class="user-info-content-item"><button (click)="isSelected = !isSelected">Select</button></div>
+          <div class="user-info-content-item">Id: <b>{{ user.id }}</b></div>
+          <div class="user-info-content-item">Username: <b>{{ user.name }}</b></div>
+          <div class="user-info-content-item">Date: <b>{{ user.date | date:"medium":"+0300":"ua" }}</b></div>
+          <div class="user-info-content-item">Earned: <b>{{ user.earned | currency:"EUR" }}</b></div>
+          <!--<div class="user-info-content-item">JSON: <b>{{ user | json }}</b></div>-->
+          <div class="user-info-content-item">
+            <app-badge-component [status]="user.status"></app-badge-component>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
 </div>
 
 <ng-template #emptyList>

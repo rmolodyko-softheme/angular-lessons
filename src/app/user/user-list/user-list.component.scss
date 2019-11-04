@@ -22,11 +22,11 @@
 }
 
 .user-info {
-    margin: 10px;
     display: flex;
     flex-flow: row;
-    padding: 10px;
     border: 1px solid #bfbfbf;
+    position: absolute;
+    width: 100%;
 
     .user-avatar {
         width: 160px;
@@ -69,4 +69,11 @@
 .filter-input {
     margin-bottom: 10px;
     margin-right: 10px;
+}
+
+.user-info-base {
+    position: relative;
+    margin: 10px;
+    overflow: hidden;
+    height: 200px;
 }

@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConsoleLoggerService, DEFAULT_LOG_LEVEL, LogLevel } from './loggers/console-logger.service';
 import { LOGGER, Logger } from './loggers/logger';
 import { DbLoggerService } from './loggers/db-logger.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { DbLoggerService } from './loggers/db-logger.service';
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     UserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   bootstrap: [AppComponent],
   providers: [
