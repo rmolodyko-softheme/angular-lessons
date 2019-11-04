@@ -12,9 +12,6 @@ import { ConsoleLoggerService, DEFAULT_LOG_LEVEL, LogLevel } from './loggers/con
 import { LOGGER, Logger } from './loggers/logger';
 import { DbLoggerService } from './loggers/db-logger.service';
 
-const isDbLogger = window.location.href.indexOf('logger=db') !== -1;
-const isBothLoggers = window.location.href.indexOf('logger=both') !== -1;
-
 @NgModule({
   declarations: [
     AppComponent
@@ -38,18 +35,10 @@ const isBothLoggers = window.location.href.indexOf('logger=both') !== -1;
     },
     {
       provide: Logger,
-      useFactory: (console, db, loggers: Logger[]) => {
-        if (isBothLoggers) {
-          return {
-            log(text: string, logLevel: LogLevel) {
-              loggers.forEach(logger => logger.log(text, logLevel));
-            }
-          }
-        } else {
-          return isDbLogger ? db : console;
-        }
+      useFactory: (console) => {
+        return console;
       },
-      deps: [ConsoleLoggerService, DbLoggerService, LOGGER]
+      deps: [ConsoleLoggerService]
     },
     {
       provide: DEFAULT_LOG_LEVEL,
