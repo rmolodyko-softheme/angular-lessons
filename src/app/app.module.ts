@@ -17,7 +17,7 @@ import { DbLoggerService } from './loggers/db-logger.service';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     UserModule,
     AppRoutingModule
   ],
