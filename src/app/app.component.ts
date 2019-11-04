@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserDataService } from './user/services/user-data.service';
 import { Logger } from './loggers/logger';
 import { LogLevel } from './loggers/console-logger.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,6 @@ import { LogLevel } from './loggers/console-logger.service';
 })
 export class AppComponent {
   constructor(private userDataService: UserDataService, private loggerService: Logger) {
-    this.loggerService.log('Hello from app', LogLevel.WARNING);
+    this.loggerService.log('Hello from app: ' + environment.appName, LogLevel.WARNING);
   }
 }
